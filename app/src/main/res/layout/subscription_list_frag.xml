@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+    <RelativeLayout
+        android:id="@+id/subContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/Subs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/list_item_padding"
+                android:layout_marginRight="@dimen/list_item_padding"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:gravity="center_vertical"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+            <ListView
+            android:id="@+id/tasks_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/noSubs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerInParent="true">
+
+            <TextView
+                android:id="@+id/noSubsView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/list_item_padding"
+                android:gravity="center"
+                android:text="@string/noSubs"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/no_subs" />
+
+            <TextView
+                android:id="@+id/noSubsViewPlus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/list_item_padding"
+                android:gravity="center"
+                android:text="@string/noSubsPlus"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/no_subs" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</android.support.v4.widget.DrawerLayout>

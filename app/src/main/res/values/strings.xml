@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Subscriptions</string>
+    <string name="noSubs">Please add new subscription</string>
+    <string name="noSubsPlus">by tapping +</string>
+    <string name="add_new_sub">add sub</string>
+    <string name="back_to_list">back to list</string>
+</resources>
