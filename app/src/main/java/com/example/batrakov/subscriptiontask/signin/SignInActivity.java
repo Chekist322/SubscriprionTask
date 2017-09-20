@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 
 import com.example.batrakov.subscriptiontask.R;
 import com.example.batrakov.subscriptiontask.util.ActivityUtils;
@@ -18,15 +19,15 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(aSavedInstanceState);
         setContentView(R.layout.sign_in_act);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarSignIn);
         setSupportActionBar(toolbar);
 
         SignInFragment signInFragment = (SignInFragment)
-                getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+                getSupportFragmentManager().findFragmentById(R.id.contentFrameSignIn);
         if (signInFragment == null) {
             signInFragment = signInFragment.newInstance();
             ActivityUtils.addFragmentToActivity(
-                    getSupportFragmentManager(), signInFragment, R.id.contentFrame
+                    getSupportFragmentManager(), signInFragment, R.id.contentFrameSignIn
             );
         }
     }
