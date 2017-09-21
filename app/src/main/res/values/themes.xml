@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyColorButton" parent="AppTheme">
+        <item name="colorControlHighlight">@color/accent</item>
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+    </style>
+</resources>

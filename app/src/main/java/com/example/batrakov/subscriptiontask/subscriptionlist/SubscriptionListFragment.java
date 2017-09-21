@@ -1,7 +1,11 @@
 package com.example.batrakov.subscriptiontask.subscriptionlist;
 
+import android.app.Activity;
 import android.app.IntentService;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.batrakov.subscriptiontask.R;
@@ -24,6 +29,11 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
 
     private TextView mNoSubView;
     private TextView mNoSubViewPlus;
+    private ListView mListView;
+    private SubscriptionListPresenter mSubscriptionListPresenter;
+    private BroadcastReceiver mBr;
+
+    private static final String SERVICE_TASK = "service task";
 
     public SubscriptionListFragment() {
     }
@@ -40,8 +50,15 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
 
         mNoSubView = (TextView) root.findViewById(R.id.noSubsView);
         mNoSubViewPlus = (TextView) root.findViewById(R.id.noSubsViewPlus);
+        mListView = (ListView) root.findViewById(R.id.subList);
 
         setHasOptionsMenu(true);
+
+        mSubscriptionListPresenter = new SubscriptionListPresenter(this);
+        mSubscriptionListPresenter.start();
+
+
+
 
         return root;
     }
@@ -52,25 +69,35 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
     }
 
     @Override
+    public void setLoadingIndicator(boolean active) {
+
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.add_new_sub:
                 showSignIn();
-                    return true;
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
     @Override
-    public void setLoadingIndicator(boolean active) {
+    public void showSignIn() {
+        Intent intent = new Intent(getContext(), SignInActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void startServiceTask(Intent aIntent) {
 
     }
 
     @Override
-    public void showSignIn() {
-        Intent intent = new Intent(getContext(), SignInActivity.class);
-        startActivity(intent);
+    public Activity getCurrentActivity() {
+        return getActivity();
     }
 
     @Override

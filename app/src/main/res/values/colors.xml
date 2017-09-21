@@ -5,4 +5,5 @@
     <color name="accent">#26a69a</color>
     <color name="colorPrimary">#263238</color>
     <color name="no_subs">#77263238</color>
+    <color name="none">#00ffffff</color>
 </resources>

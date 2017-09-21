@@ -2,9 +2,11 @@ package com.example.batrakov.subscriptiontask.signin;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.widget.EditText;
 
 import com.example.batrakov.subscriptiontask.R;
 import com.example.batrakov.subscriptiontask.util.ActivityUtils;
@@ -14,9 +16,13 @@ import com.example.batrakov.subscriptiontask.util.ActivityUtils;
  */
 
 public class SignInActivity extends AppCompatActivity {
+
+    private SignInPresenter mPresenter;
+
     @Override
     protected void onCreate(@Nullable Bundle aSavedInstanceState) {
         super.onCreate(aSavedInstanceState);
+
         setContentView(R.layout.sign_in_act);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarSignIn);
@@ -30,7 +36,7 @@ public class SignInActivity extends AppCompatActivity {
                     getSupportFragmentManager(), signInFragment, R.id.contentFrameSignIn
             );
         }
+
+        mPresenter = new SignInPresenter();
     }
-
-
 }

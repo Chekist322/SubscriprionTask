@@ -1,6 +1,10 @@
 package com.example.batrakov.subscriptiontask.subscriptionlist;
 
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+
 import com.example.batrakov.subscriptiontask.BasePresenter;
 import com.example.batrakov.subscriptiontask.BaseView;
 
@@ -12,10 +16,13 @@ public interface SubscriptionListContract {
 
     interface View extends BaseView<Presenter>{
 
-        void setLoadingIndicator(boolean active);
+        void setLoadingIndicator(boolean aActive);
 
         void showSignIn();
 
+        void startServiceTask(Intent aIntent);
+
+        Activity getCurrentActivity();
     }
     interface Presenter extends BasePresenter{
 
@@ -23,6 +30,6 @@ public interface SubscriptionListContract {
 
         void unsubscripe();
 
-
+        void readFromService();
     }
 }

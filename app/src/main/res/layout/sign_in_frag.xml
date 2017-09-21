@@ -7,72 +7,99 @@
     android:background="@color/colorPrimary"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/button3"
-            style="@android:style/Widget.Material.Button.Colored"
-            android:layout_width="300dp"
-            android:layout_height="70dp"
-            android:layout_below="@+id/editText9"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:background="@color/accent"
-            android:text="Subscribe"
-            android:textSize="24sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/editText7"
-            style="@style/AlertDialog.AppCompat.Light"
-            android:layout_width="wrap_content"
-            android:layout_height="70dp"
-            android:layout_alignEnd="@+id/editText8"
-            android:layout_alignParentBottom="false"
-            android:layout_alignParentEnd="false"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/editText8"
-            android:layout_marginTop="75dp"
-            android:paddingStart="@dimen/edit_text_padding"
-            android:paddingEnd="@dimen/edit_text_padding"
-            android:background="@color/primary_dark"
-            android:ems="10"
-            android:hint="Name"
-            android:inputType="textPersonName"
-            android:textSize="24sp" />
+            <EditText
+                android:id="@+id/name"
+                style="@style/AlertDialog.AppCompat.Light"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_alignEnd="@+id/editText8"
+                android:layout_alignParentEnd="@+id/editText8"
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/editText8"
+                android:layout_marginBottom="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="64dp"
+                android:background="@color/primary_dark"
+                android:ems="10"
+                android:hint="Name"
+                android:inputType="textPersonName"
+                android:outlineProvider="bounds"
+                android:paddingEnd="@dimen/edit_text_padding"
+                android:paddingStart="@dimen/edit_text_padding"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:textSize="24sp" />
 
-        <EditText
-            android:id="@+id/editText8"
-            android:layout_width="wrap_content"
-            android:layout_height="70dp"
-            android:layout_alignEnd="@+id/editText9"
-            android:layout_alignStart="@+id/editText9"
-            android:layout_below="@+id/editText7"
-            android:layout_marginTop="56dp"
-            android:paddingStart="@dimen/edit_text_padding"
-            android:paddingEnd="@dimen/edit_text_padding"
-            android:background="@color/primary_dark"
-            android:ems="10"
-            android:hint="Park code"
-            android:inputType="textPersonName"
-            android:textSize="24sp" />
+            <EditText
+                android:id="@+id/parkCode"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_alignEnd="@+id/editText9"
+                android:layout_alignStart="@+id/editText9"
+                android:layout_below="@+id/editText7"
+                android:layout_gravity="top"
+                android:layout_marginBottom="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/primary_dark"
+                android:ems="10"
+                android:hint="Park code"
+                android:inputType="textPersonName"
+                android:paddingEnd="@dimen/edit_text_padding"
+                android:paddingStart="@dimen/edit_text_padding"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:textSize="24sp" />
 
-        <EditText
-            android:id="@+id/editText9"
-            android:layout_width="wrap_content"
-            android:layout_height="70dp"
-            android:layout_alignEnd="@+id/button3"
-            android:layout_alignStart="@+id/button3"
-            android:layout_below="@+id/editText8"
-            android:layout_marginTop="63dp"
-            android:paddingStart="@dimen/edit_text_padding"
-            android:paddingEnd="@dimen/edit_text_padding"
-            android:background="@color/primary_dark"
-            android:ems="10"
-            android:hint="Access code"
-            android:inputType="textPersonName"
-            android:textSize="24sp" />
-    </RelativeLayout>
+            <EditText
+                android:id="@+id/accessCode"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_alignEnd="@+id/button3"
+                android:layout_alignParentBottom="false"
+                android:layout_alignStart="@+id/button3"
+                android:layout_below="@+id/editText8"
+                android:layout_marginBottom="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/primary_dark"
+                android:ems="10"
+                android:hint="Access code"
+                android:inputType="textPersonName"
+                android:paddingEnd="@dimen/edit_text_padding"
+                android:paddingStart="@dimen/edit_text_padding"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/subscribeButton"
+                style="@android:style/Widget.Material.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/accent"
+                android:text="Subscribe"
+                android:textColor="@android:color/background_light"
+                android:textSize="24sp" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
 </LinearLayout>

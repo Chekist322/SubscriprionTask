@@ -10,16 +10,27 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.batrakov.subscriptiontask.R;
 import com.example.batrakov.subscriptiontask.subscriptionlist.SubscriptionListActivity;
 import com.example.batrakov.subscriptiontask.subscriptionlist.SubscriptionListFragment;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by batrakov on 19.09.17.
  */
 
 public class SignInFragment extends Fragment implements SignInContract.View{
+
+    ArrayList<String> mData;
+    private EditText mName;
+    private EditText mParkCode;
+    private EditText mAccessCode;
+    private SignInContract.Presenter mPresenter;
 
     public SignInFragment(){
     }
@@ -32,8 +43,10 @@ public class SignInFragment extends Fragment implements SignInContract.View{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.sign_in_frag, container, false);
-
         setHasOptionsMenu(true);
+        mName = root.findViewById(R.id.name);
+        mParkCode = root.findViewById(R.id.parkCode);
+        mAccessCode = root.findViewById(R.id.accessCode);
         return root;
     }
 
@@ -46,7 +59,8 @@ public class SignInFragment extends Fragment implements SignInContract.View{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.back_to_list:
-                
+//                getFragmentManager().saveFragmentInstanceState(this);
+                getActivity().finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -56,6 +70,26 @@ public class SignInFragment extends Fragment implements SignInContract.View{
 
     @Override
     public void setPresenter(SignInContract.Presenter presenter) {
-
+        mPresenter = presenter;
     }
+
+//    @Override
+//    public void onActivityCreated(Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//        if (savedInstanceState != null) {
+//            mName.setText(savedInstanceState.getStringArrayList("list").get(0));
+//            mParkCode.setText(savedInstanceState.getStringArrayList("list").get(1));
+//            mAccessCode.setText(savedInstanceState.getStringArrayList("list").get(2));
+//            //Restore the fragment's state here
+//        }
+//    }
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        mData.add(mName.getText().toString());
+//        mData.add(mParkCode.getText().toString());
+//        mData.add(mAccessCode.getText().toString());
+//        outState.putStringArrayList("fields", mData);
+//        //Save the fragment's state here
+//    }
 }
