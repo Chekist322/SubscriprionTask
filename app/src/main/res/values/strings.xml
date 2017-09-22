@@ -5,4 +5,6 @@
     <string name="add_new_sub">add sub</string>
     <string name="back_to_list">back to list</string>
     <string name="sub_samle">SAMPLE_SUBSCRIPION</string>
+    <string name="menu_rename">Rename</string>
+    <string name="menu_unsubscribe">Unsubscribe</string>
 </resources>

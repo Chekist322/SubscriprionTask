@@ -27,7 +27,9 @@
 
         </activity>
 
-        <service android:name=".SubscriptionService"/>
+        <service
+            android:name=".SubscriptionService"
+            android:process="com.example.batrakov.subscriptiontaskservice"/>
 
 
     </application>

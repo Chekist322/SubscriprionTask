@@ -6,4 +6,5 @@
     <color name="colorPrimary">#263238</color>
     <color name="no_subs">#77263238</color>
     <color name="none">#00ffffff</color>
+    <color name="black">#000000</color>
 </resources>

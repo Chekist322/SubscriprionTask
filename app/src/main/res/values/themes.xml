@@ -3,5 +3,6 @@
     <style name="MyColorButton" parent="AppTheme">
         <item name="colorControlHighlight">@color/accent</item>
         <item name="colorButtonNormal">@color/colorPrimary</item>
+        <item name="android:itemTextAppearance">@color/black</item>
     </style>
 </resources>

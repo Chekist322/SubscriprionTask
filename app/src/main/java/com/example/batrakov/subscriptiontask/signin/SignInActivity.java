@@ -25,9 +25,6 @@ public class SignInActivity extends AppCompatActivity {
 
         setContentView(R.layout.sign_in_act);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarSignIn);
-        setSupportActionBar(toolbar);
-
         SignInFragment signInFragment = (SignInFragment)
                 getSupportFragmentManager().findFragmentById(R.id.contentFrameSignIn);
         if (signInFragment == null) {
@@ -37,6 +34,6 @@ public class SignInActivity extends AppCompatActivity {
             );
         }
 
-        mPresenter = new SignInPresenter();
+        mPresenter = new SignInPresenter(signInFragment);
     }
 }

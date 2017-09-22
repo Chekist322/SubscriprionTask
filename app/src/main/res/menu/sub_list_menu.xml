@@ -6,5 +6,5 @@
         android:id="@+id/add_new_sub"
         android:icon="@drawable/ic_add"
         android:title="@string/add_new_sub"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 </menu>

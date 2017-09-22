@@ -7,6 +7,9 @@ import android.content.Intent;
 
 import com.example.batrakov.subscriptiontask.BasePresenter;
 import com.example.batrakov.subscriptiontask.BaseView;
+import com.example.batrakov.subscriptiontask.Subscription;
+
+import java.util.ArrayList;
 
 /**
  * Created by batrakov on 20.09.17.
@@ -20,7 +23,7 @@ public interface SubscriptionListContract {
 
         void showSignIn();
 
-        void startServiceTask(Intent aIntent);
+        void showSubs(ArrayList<Subscription> aList);
 
         Activity getCurrentActivity();
     }
@@ -28,8 +31,10 @@ public interface SubscriptionListContract {
 
         void addNewSubscription();
 
-        void unsubscripe();
+        void unsubscripe(int aIndex);
 
         void readFromService();
+
+        void buildReciever();
     }
 }

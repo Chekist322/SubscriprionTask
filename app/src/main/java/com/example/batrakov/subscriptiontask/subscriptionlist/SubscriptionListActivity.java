@@ -16,7 +16,6 @@ import com.example.batrakov.subscriptiontask.util.ActivityUtils;
 
 public class SubscriptionListActivity extends AppCompatActivity {
 
-//    private DrawerLayout mDrawerLayout;
 
     private SubscriptionListPresenter mSubscriptionListPresenter;
 
@@ -25,12 +24,8 @@ public class SubscriptionListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subscription_list_act);
 
-//        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-      //  ActionBar ab = getSupportActionBar();
 
         SubscriptionListFragment subscriptionListFragment =
                 (SubscriptionListFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
@@ -39,5 +34,7 @@ public class SubscriptionListActivity extends AppCompatActivity {
             ActivityUtils.addFragmentToActivity(
                     getSupportFragmentManager(), subscriptionListFragment, R.id.contentFrame);
         }
+
+        mSubscriptionListPresenter = new SubscriptionListPresenter(subscriptionListFragment);
     }
 }
