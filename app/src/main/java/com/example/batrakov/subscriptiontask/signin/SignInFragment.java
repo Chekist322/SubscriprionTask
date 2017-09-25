@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.batrakov.subscriptiontask.R;
 import com.example.batrakov.subscriptiontask.Subscription;
@@ -39,6 +40,9 @@ public class SignInFragment extends Fragment implements SignInContract.View{
     private SignInContract.Presenter mPresenter;
     private Handler mHandler;
     private ImageView mBack;
+    private TextView mNameError;
+    private TextView mParkCodeError;
+    private TextView mAccessCodeError;
 
     private static final int START_HANDLE = 1;
     private static final int FINISH_HANDLE = 2;
@@ -64,6 +68,12 @@ public class SignInFragment extends Fragment implements SignInContract.View{
         mProgressBar = root.findViewById(R.id.progressBar);
         mProgressBar.setVisibility(View.GONE);
         mBack = root.findViewById(R.id.backToList);
+        mNameError = root.findViewById(R.id.nameError);
+        mParkCodeError = root.findViewById(R.id.parkCodeError);
+        mAccessCodeError = root.findViewById(R.id.accessCodeError);
+
+        mPresenter.readFromService();
+
 
         mBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,11 +105,13 @@ public class SignInFragment extends Fragment implements SignInContract.View{
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Subscription newSub = new Subscription(mName.getText().toString(), mParkCode.getText().toString(), mAccessCode.getText().toString());
-                mPresenter.writeToService(newSub);
-                Thread loadingThread = new Thread(new Loading());
-                loadingThread.start();
-            }
+                    boolean[] checkList = mPresenter.fullCheck(mName.getText().toString(), mParkCode.getText().toString(), mAccessCode.getText().toString());
+
+
+                    Subscription newSub = new Subscription(mName.getText().toString(), mParkCode.getText().toString(), mAccessCode.getText().toString(), false);
+                    mPresenter.writeToService(newSub);
+                    startDelay();
+                }
         });
 
         return root;
@@ -114,6 +126,12 @@ public class SignInFragment extends Fragment implements SignInContract.View{
     @Override
     public Activity getCurrentActivity() {
         return getActivity();
+    }
+
+    @Override
+    public void startDelay() {
+        Thread loadingThread = new Thread(new Loading());
+        loadingThread.start();
     }
 
     private class Loading implements Runnable{

@@ -7,4 +7,7 @@
     <color name="no_subs">#77263238</color>
     <color name="none">#00ffffff</color>
     <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="red">#dd2c00</color>
+    <color name="lowOpacityBlack">#aa000000</color>
 </resources>

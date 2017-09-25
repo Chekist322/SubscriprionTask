@@ -19,22 +19,32 @@ public interface SubscriptionListContract {
 
     interface View extends BaseView<Presenter>{
 
-        void setLoadingIndicator(boolean aActive);
-
         void showSignIn();
 
         void showSubs(ArrayList<Subscription> aList);
 
+        void checkRadioButtons(int aIndex);
+
         Activity getCurrentActivity();
+
+        void startDelay(int aDelay);
     }
     interface Presenter extends BasePresenter{
 
         void addNewSubscription();
 
-        void unsubscripe(int aIndex);
+        void unsubscribe(int aIndex);
+
+        void unsubscribeError();
 
         void readFromService();
 
         void buildReciever();
+
+        void renameAlertDialogBuilder(int aIndex);
+
+        void unsubscribeAlertDialogBuilder(int aIndex);
+
+        void changeRadioButtons(int aIndex);
     }
 }

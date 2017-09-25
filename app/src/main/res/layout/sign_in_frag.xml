@@ -45,73 +45,119 @@
                     app:srcCompat="@drawable/ic_cross" />
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/nameItem"
-                style="@style/AlertDialog.AppCompat.Light"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_alignEnd="@+id/editText8"
-                android:layout_alignParentEnd="@+id/editText8"
-                android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/editText8"
-                android:layout_marginBottom="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
-                android:background="@color/primary_dark"
-                android:ems="10"
-                android:hint="Name"
-                android:inputType="textPersonName"
-                android:outlineProvider="bounds"
-                android:paddingEnd="@dimen/edit_text_padding"
-                android:paddingStart="@dimen/edit_text_padding"
-                android:selectAllOnFocus="true"
-                android:singleLine="true"
-                android:textSize="24sp" />
+                android:layout_height="match_parent"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/parkCode"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_alignEnd="@+id/editText9"
-                android:layout_alignStart="@+id/editText9"
-                android:layout_below="@+id/editText7"
-                android:layout_gravity="top"
-                android:layout_marginBottom="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
-                android:background="@color/primary_dark"
-                android:ems="10"
-                android:hint="Park code"
-                android:inputType="textPersonName"
-                android:paddingEnd="@dimen/edit_text_padding"
-                android:paddingStart="@dimen/edit_text_padding"
-                android:selectAllOnFocus="true"
-                android:singleLine="true"
-                android:textSize="24sp" />
+                <TextView
+                    android:id="@+id/nameError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="32dp"
+                    android:text="@string/duplicateName"
+                    android:textColor="@color/red"
+                    android:textSize="18sp"
+                    android:visibility="invisible" />
 
-            <EditText
-                android:id="@+id/accessCode"
+                <EditText
+                    android:id="@+id/nameItem"
+                    style="@style/AlertDialog.AppCompat.Light"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_alignEnd="@+id/editText8"
+                    android:layout_alignParentEnd="@+id/editText8"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignStart="@+id/editText8"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginStart="32dp"
+                    android:background="@color/primary_dark"
+                    android:ems="10"
+                    android:hint="Name"
+                    android:inputType="textPersonName"
+                    android:outlineProvider="bounds"
+                    android:paddingEnd="@dimen/edit_text_padding"
+                    android:paddingStart="@dimen/edit_text_padding"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true"
+                    android:textSize="24sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_alignEnd="@+id/button3"
-                android:layout_alignParentBottom="false"
-                android:layout_alignStart="@+id/button3"
-                android:layout_below="@+id/editText8"
-                android:layout_marginBottom="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
-                android:background="@color/primary_dark"
-                android:ems="10"
-                android:hint="Access code"
-                android:inputType="textPersonName"
-                android:paddingEnd="@dimen/edit_text_padding"
-                android:paddingStart="@dimen/edit_text_padding"
-                android:selectAllOnFocus="true"
-                android:singleLine="true"
-                android:textSize="24sp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/parkCodeError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="32dp"
+                    android:text="@string/parkCodeIsIncorrect"
+                    android:textColor="@color/red"
+                    android:textSize="18sp"
+                    android:visibility="invisible" />
+
+                <EditText
+                    android:id="@+id/parkCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_alignEnd="@+id/editText9"
+                    android:layout_alignStart="@+id/editText9"
+                    android:layout_below="@+id/editText7"
+                    android:layout_gravity="top"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginStart="32dp"
+                    android:background="@color/primary_dark"
+                    android:ems="10"
+                    android:hint="Park code"
+                    android:inputType="textPersonName"
+                    android:paddingEnd="@dimen/edit_text_padding"
+                    android:paddingStart="@dimen/edit_text_padding"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true"
+                    android:textSize="24sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/accessCodeError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="32dp"
+                    android:text="@string/invalidAccessCode"
+                    android:textColor="@color/red"
+                    android:textSize="18sp"
+                    android:visibility="invisible" />
+
+                <EditText
+                    android:id="@+id/accessCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_alignEnd="@+id/button3"
+                    android:layout_alignParentBottom="false"
+                    android:layout_alignStart="@+id/button3"
+                    android:layout_below="@+id/editText8"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginStart="32dp"
+                    android:background="@color/primary_dark"
+                    android:ems="10"
+                    android:hint="Access code"
+                    android:inputType="textPersonName"
+                    android:paddingEnd="@dimen/edit_text_padding"
+                    android:paddingStart="@dimen/edit_text_padding"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true"
+                    android:textSize="24sp" />
+            </LinearLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -137,7 +183,7 @@
                     android:id="@+id/progressBar"
                     style="?android:attr/progressBarStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="70dp" />
             </FrameLayout>
 
         </LinearLayout>

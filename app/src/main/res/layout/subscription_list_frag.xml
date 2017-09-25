@@ -11,6 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <FrameLayout
+            android:id="@+id/lowOpacityBlack"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/lowOpacityBlack"
+            android:visibility="gone">
+
+        </FrameLayout>
+
         <LinearLayout
             android:id="@+id/Subs"
             android:layout_width="match_parent"
@@ -27,30 +36,45 @@
             android:id="@+id/noSubs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerInParent="true">
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/noSubsView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/list_item_padding"
-                android:gravity="center"
-                android:text="@string/noSubs"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/no_subs" />
-
-            <TextView
-                android:id="@+id/noSubsViewPlus"
+            <LinearLayout
+                android:id="@+id/words"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/list_item_padding"
-                android:gravity="center"
-                android:text="@string/noSubsPlus"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/no_subs" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/noSubsView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/list_item_padding"
+                    android:gravity="center"
+                    android:text="@string/noSubs"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/no_subs" />
+
+                <TextView
+                    android:id="@+id/noSubsViewPlus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/list_item_padding"
+                    android:gravity="center"
+                    android:text="@string/noSubsPlus"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/no_subs" />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="60dp" />
 
         </LinearLayout>
 
     </RelativeLayout>
+
 </android.support.v4.widget.DrawerLayout>

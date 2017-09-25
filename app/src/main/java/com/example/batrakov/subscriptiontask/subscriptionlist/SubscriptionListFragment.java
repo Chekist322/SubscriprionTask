@@ -1,8 +1,10 @@
 package com.example.batrakov.subscriptiontask.subscriptionlist;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -18,7 +20,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.batrakov.subscriptiontask.R;
 import com.example.batrakov.subscriptiontask.Subscription;
@@ -39,7 +45,16 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
     private ListView mListView;
     private SubAdapter mListAdapter;
     private MenuItem mAddSub;
-    private ImageView mSubInfo;
+    private Handler mHandler;
+    private ProgressBar mProgressBar;
+    private View mNoSubLayout;
+    private View mLowOpacityBlack;
+
+    private static final int START_HANDLE = 0;
+    private static final int FINISH_HANDLE = 1;
+
+    private static final int SUCCESS = 0;
+    private static final int FAULT = 1;
 
     private SubscriptionListContract.Presenter mSubscriptionListPresenter;
 
@@ -48,6 +63,7 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
         Log.i("stage", "onCreate");
         super.onCreate(savedInstanceState);
         mListAdapter = new SubAdapter(new ArrayList<Subscription>(0));
+        mSubscriptionListPresenter.start();
     }
 
     public SubscriptionListFragment() {
@@ -62,23 +78,54 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
     public void onResume() {
         Log.i("stage", "onResume");
         super.onResume();
-        mSubscriptionListPresenter.start();
+        mSubscriptionListPresenter.readFromService();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         Log.i("stage", "onCreateView");
-        View root = inflater.inflate(R.layout.subscription_list_frag, container, false);
+        final View root = inflater.inflate(R.layout.subscription_list_frag, container, false);
 
         mNoSubView = (TextView) root.findViewById(R.id.noSubsView);
         mNoSubViewPlus = (TextView) root.findViewById(R.id.noSubsViewPlus);
         mListView = (ListView) root.findViewById(R.id.subList);
-        mSubInfo = (ImageView) root.findViewById(R.id.item_info);
+        mProgressBar = (ProgressBar) root.findViewById(R.id.progressBar);
+        mProgressBar.setVisibility(View.GONE);
+        mNoSubLayout = root.findViewById(R.id.words);
+        mLowOpacityBlack = root.findViewById(R.id.lowOpacityBlack);
 
         mListView.setAdapter(mListAdapter);
 
         setHasOptionsMenu(true);
+
+        mHandler = new Handler(Looper.myLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what){
+                    case START_HANDLE:
+                        mNoSubLayout.setVisibility(View.GONE);
+                        mListView.setVisibility(View.GONE);
+                        mLowOpacityBlack.setVisibility(View.VISIBLE);
+                        mProgressBar.setVisibility(View.VISIBLE);
+                        break;
+                    case FINISH_HANDLE:
+                        mNoSubLayout.setVisibility(View.VISIBLE);
+                        mListView.setVisibility(View.VISIBLE);
+                        mLowOpacityBlack.setVisibility(View.GONE);
+                        mProgressBar.setVisibility(View.GONE);
+                        if (msg.arg1 == FAULT){
+                            Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Unsubscription failed, please try again.", Toast.LENGTH_LONG);
+                            toast.show();
+                        }
+                        break;
+                    default:
+                        super.handleMessage(msg);
+                }
+            }
+        };
+
+
         return root;
     }
 
@@ -90,9 +137,10 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()){
                     case R.id.rename_item:
+                        mSubscriptionListPresenter.renameAlertDialogBuilder(index);
                         break;
                     case R.id.unsubscribe_item:
-                        mSubscriptionListPresenter.unsubscripe(index);
+                        mSubscriptionListPresenter.unsubscribeAlertDialogBuilder(index);
                         break;
                 }
                 return false;
@@ -101,16 +149,18 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
         popupMenu.show();
     }
 
+
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         Log.i("stage", "onCreateOptionsMenu");
         inflater.inflate(R.menu.sub_list_menu, menu);
         mAddSub = menu.findItem(R.id.add_new_sub);
-    }
-
-    @Override
-    public void setLoadingIndicator(boolean active) {
-
+        if (mListAdapter.getCount() > 2){
+            mAddSub.setVisible(false);
+        } else {
+            mAddSub.setVisible(true);
+        }
     }
 
     @Override
@@ -132,7 +182,7 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
 
     @Override
     public void showSubs(ArrayList<Subscription> aList) {
-        Log.i("stage", String.valueOf(aList.size()));
+        Log.i("stage", "showSubs");
         if (!aList.isEmpty()){
             mNoSubView.setVisibility(View.GONE);
             mNoSubViewPlus.setVisibility(View.GONE);
@@ -141,6 +191,12 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
             mNoSubViewPlus.setVisibility(View.VISIBLE);
         }
         mListAdapter.replaceData(aList);
+        getActivity().invalidateOptionsMenu();
+    }
+
+    @Override
+    public void checkRadioButtons(int aIndex) {
+        mSubscriptionListPresenter.changeRadioButtons(aIndex);
     }
 
     @Override
@@ -187,7 +243,7 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
+        public View getView(final int i, View view, ViewGroup viewGroup) {
             View rowView = view;
             if (rowView == null) {
                 LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
@@ -195,30 +251,69 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
             }
 
             final Subscription subscription = getItem(i);
-            Log.i("test", "test");
-            System.out.println(subscription.getName());
-            System.out.println(subscription.getParkCode());
-            System.out.println(subscription.getAccessCode());
             final TextView name = (TextView) rowView.findViewById(R.id.nameItem);
             name.setText(subscription.getName());
-            final TextView parkCode = (TextView) rowView.findViewById(R.id.parkCodeItem);
-            parkCode.setText(subscription.getParkCode());
-            final TextView accessCode = (TextView) rowView.findViewById(R.id.accessCodeItem);
-            accessCode.setText(subscription.getAccessCode());
-            final ImageView imageView = (ImageView) rowView.findViewById(R.id.item_info);
-            final int index = i;
-            imageView.setOnClickListener(new View.OnClickListener() {
+            final RadioButton button = (RadioButton) rowView.findViewById(R.id.radioButton);
+            if (subscription.isEnabled()){
+                Log.i("radio", "true");
+                button.setChecked(true);
+            } else {
+                Log.i("radio", "false");
+                button.setChecked(false);
+            }
+            button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showPopUpMenu(imageView, index);
+                    Log.i("cho", "click");
+                    checkRadioButtons(i);
                 }
             });
 
+            final ImageView imageView = (ImageView) rowView.findViewById(R.id.item_info);
 
-
-
-
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showPopUpMenu(imageView, i);
+                }
+            });
             return rowView;
         }
+    }
+
+    private class Loading implements Runnable{
+
+        int delay;
+        private final int longDelay = 10000;
+
+        Loading(int aDelay){
+            delay = aDelay;
+        }
+
+        @Override
+        public void run() {
+
+            mHandler.sendEmptyMessage(START_HANDLE);
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            Looper.prepare();
+            mHandler.sendEmptyMessage(FINISH_HANDLE);
+            Message msg = new Message();
+            msg.what = FINISH_HANDLE;
+            msg.arg1 = SUCCESS;
+            if (delay == longDelay){
+                msg.arg1 = FAULT;
+            }
+            mHandler.sendMessage(msg);
+        }
+    }
+
+    public void startDelay(int aDelay){
+        Thread thread = new Thread(new Loading(aDelay));
+        thread.start();
     }
 }

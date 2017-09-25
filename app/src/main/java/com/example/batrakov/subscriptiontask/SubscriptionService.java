@@ -1,23 +1,16 @@
 package com.example.batrakov.subscriptiontask;
 
-import android.app.IntentService;
 import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
+import android.util.Log;
 
 import com.example.batrakov.subscriptiontask.signin.SignInPresenter;
 import com.example.batrakov.subscriptiontask.subscriptionlist.SubscriptionListPresenter;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -53,7 +46,7 @@ public class SubscriptionService extends Service {
         switch (intent.getStringExtra(SubscriptionListPresenter.SERVICE_TASK)){
             case SubscriptionListPresenter.READ_FROM_SERVICE:
                 Bundle outBundle = new Bundle();
-                outBundle.putSerializable(SubscriptionListPresenter.LIST_INDEX, mSubscription);
+                outBundle.putSerializable(SubscriptionListPresenter.SUB_INDEX, mSubscription);
                 Intent out = new Intent(SubscriptionListPresenter.BROADCAST_ACTION);
                 out.putExtras(outBundle);
                 sendBroadcast(out);
@@ -63,9 +56,24 @@ public class SubscriptionService extends Service {
                 Subscription inSubscription = (Subscription) inBundle.getSerializable(SignInPresenter.NEW_SUB);
                 addSub(inSubscription);
                 break;
-            case SubscriptionListPresenter.REMOVE_SUB:
-                mSubscription.remove(intent.getIntExtra(SubscriptionListPresenter.LIST_INDEX, 0));
+
+            case SignInPresenter.GET_NAMES:
+                ArrayList<String> names = new ArrayList<>();
+                for (int i = 0; i < mSubscription.size(); i++) {
+                    names.add(mSubscription.get(0).getName());
+                }
+                Intent namesIntent = new Intent(SignInPresenter.BROADCAST_ACTION);
+                namesIntent.putStringArrayListExtra(SignInPresenter.GET_NAMES, names);
+                sendBroadcast(namesIntent);
                 break;
+            case SubscriptionListPresenter.REMOVE_SUB:
+                mSubscription.remove(intent.getIntExtra(SubscriptionListPresenter.SUB_INDEX, 0));
+                break;
+            case SubscriptionListPresenter.RENAME_SUB:
+                rename(intent.getIntExtra(SubscriptionListPresenter.SUB_INDEX, 0), intent.getStringExtra(SubscriptionListPresenter.NEW_NAME));
+                break;
+            case SubscriptionListPresenter.RADIO_CHECK:
+                radioChange(intent.getIntExtra(SubscriptionListPresenter.SUB_INDEX, 0));
         }
 
         return super.onStartCommand(intent, flags, startId);
@@ -81,19 +89,24 @@ public class SubscriptionService extends Service {
         mSubscription.add(aSub);
     }
 
+    private void rename(int aIndex, String aName){
+        mSubscription.get(aIndex).setName(aName);
+    }
+    
+    private void radioChange(int aIndex){
+        for (int i = 0; i < mSubscription.size(); i++) {
+            mSubscription.get(i).setEnableState(false);
+        }
+        mSubscription.get(aIndex).setEnableState(true);
+
+        for (int i = 0; i < mSubscription.size(); i++) {
+
+            System.out.println(mSubscription.get(i).isEnabled());
+        }
+    }
+
     private ArrayList<Subscription> getSubs(){
         return mSubscription;
     }
 
-//    private void buildNotification(int aAmountofSubs){
-//        NotificationCompat.Builder mBuilder =
-//                new NotificationCompat.Builder(this)
-//                        .setSmallIcon(R.mipmap.ic_launcher_round)
-//                        .setContentTitle("Subscription monitor")
-//                        .setContentText("Amount of subscriptions: " + aAmountofSubs);
-//        mNotification =  mBuilder.build();
-//        NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//        nManager.notify(ID, mNotification);
-////        startForeground(ID,mNotification);
-//    }
 }
