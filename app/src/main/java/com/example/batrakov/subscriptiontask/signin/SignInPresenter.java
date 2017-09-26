@@ -11,6 +11,7 @@ import com.example.batrakov.subscriptiontask.Subscription;
 import com.example.batrakov.subscriptiontask.SubscriptionService;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Created by batrakov on 19.09.17.
@@ -24,6 +25,7 @@ public class SignInPresenter implements SignInContract.Presenter {
     public static final String SERVICE_TASK = "service task";
     public static final String BROADCAST_ACTION = "filter sign in";
     public static final String SUB_INDEX = "sub index";
+    BroadcastReceiver mReceiver;
 
     private ArrayList<String> mNames;
     private SignInContract.View mView;
@@ -36,7 +38,7 @@ public class SignInPresenter implements SignInContract.Presenter {
 
     @Override
     public void start() {
-
+        buildReciever();
     }
 
     @Override
@@ -57,8 +59,8 @@ public class SignInPresenter implements SignInContract.Presenter {
 
     @Override
     public void buildReciever() {
-        Log.i("stage", "recieve");
-        BroadcastReceiver receiver = new BroadcastReceiver() {
+        Log.i("stage", "receive");
+        mReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getExtras() != null) {
@@ -67,21 +69,21 @@ public class SignInPresenter implements SignInContract.Presenter {
             }
         };
         IntentFilter intFilt = new IntentFilter(BROADCAST_ACTION);
-        mView.getCurrentActivity().registerReceiver(receiver, intFilt);
+        mView.getCurrentActivity().registerReceiver(mReceiver, intFilt);
     }
 
     @Override
     public boolean[] fullCheck(String aName, String aParkCode, String aAccessCode) {
         boolean[] checkList = {false, false, false};
-        checkList[0] = checkName(aName, mNames);
+        checkList[0] = checkName(aName);
         checkList[1] = checkParkCode(aParkCode);
         checkList[2] = checkAccessCode(aAccessCode);
         return checkList;
     }
 
     @Override
-    public boolean checkName(String aName, ArrayList<String> aList) {
-        for (int i = 0; i < aList.size(); i++) {
+    public boolean checkName(String aName) {
+        for (int i = 0; i < mNames.size(); i++) {
             if (aName.equals(mNames.get(i))){
                 return false;
             }
@@ -91,15 +93,18 @@ public class SignInPresenter implements SignInContract.Presenter {
 
     @Override
     public boolean checkParkCode(String aParkCode) {
-        return false;
+        return aParkCode.matches("\\d{3}(-\\d\\d\\d){2}");
     }
 
     @Override
     public boolean checkAccessCode(String aAccessCode) {
-        return false;
+        return aAccessCode.equals("1423");
     }
 
-
+    @Override
+    public void demolition() {
+        mView.getCurrentActivity().unregisterReceiver(mReceiver);
+    }
 
 
 }

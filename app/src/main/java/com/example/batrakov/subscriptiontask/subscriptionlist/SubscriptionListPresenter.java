@@ -83,8 +83,13 @@ public class SubscriptionListPresenter implements SubscriptionListContract.Prese
             public void onReceive(Context context, Intent intent) {
                 if (intent.getExtras() != null) {
                     Bundle bundle = intent.getExtras();
-                    ArrayList<Subscription> newList = (ArrayList<Subscription>) bundle.getSerializable(SUB_INDEX);
-                    mView.showSubs(newList);
+                    try {
+                        ArrayList<Subscription> newList = (ArrayList<Subscription>) bundle.getSerializable(SUB_INDEX);
+                        mView.showSubs(newList);
+                    } catch (ClassCastException e){
+                        e.printStackTrace();
+                    }
+
                 }
             }
         };
@@ -145,7 +150,7 @@ public class SubscriptionListPresenter implements SubscriptionListContract.Prese
             public void onClick(View view) {
                 Random random = new Random();
                 int chance = random.nextInt(10);
-                if (chance > 5){
+                if (chance > 7){
                     unsubscribeError();
                 } else {
                     unsubscribe(aIndex);

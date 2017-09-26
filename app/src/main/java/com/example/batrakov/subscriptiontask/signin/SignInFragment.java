@@ -1,7 +1,6 @@
 package com.example.batrakov.subscriptiontask.signin;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -9,9 +8,6 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,8 +18,6 @@ import android.widget.TextView;
 
 import com.example.batrakov.subscriptiontask.R;
 import com.example.batrakov.subscriptiontask.Subscription;
-
-import java.util.ArrayList;
 
 
 /**
@@ -51,6 +45,12 @@ public class SignInFragment extends Fragment implements SignInContract.View{
     public SignInFragment(){
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        mPresenter.buildReciever();
+        super.onCreate(savedInstanceState);
+    }
+
     public static SignInFragment newInstance() {
         return new SignInFragment();
     }
@@ -72,7 +72,7 @@ public class SignInFragment extends Fragment implements SignInContract.View{
         mParkCodeError = root.findViewById(R.id.parkCodeError);
         mAccessCodeError = root.findViewById(R.id.accessCodeError);
 
-        mPresenter.readFromService();
+
 
 
         mBack.setOnClickListener(new View.OnClickListener() {
@@ -105,16 +105,47 @@ public class SignInFragment extends Fragment implements SignInContract.View{
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                    mPresenter.readFromService();
                     boolean[] checkList = mPresenter.fullCheck(mName.getText().toString(), mParkCode.getText().toString(), mAccessCode.getText().toString());
+                    if (checkList[0] && checkList[1] && checkList[2]){
+                        Subscription newSub = new Subscription(mName.getText().toString(), mParkCode.getText().toString(), mAccessCode.getText().toString(), false);
+                        mPresenter.writeToService(newSub);
+                        startDelay();
+                    } else {
+
+                        if (!checkList[0]){
+                            mNameError.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            mNameError.setVisibility(View.INVISIBLE);
+                        }
+
+                        if (!checkList[1]){
+                            mParkCodeError.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            mParkCodeError.setVisibility(View.INVISIBLE);
+                        }
+
+                        if (!checkList[2]){
+                            mAccessCodeError.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            mAccessCodeError.setVisibility(View.INVISIBLE);
+                        }
+                    }
 
 
-                    Subscription newSub = new Subscription(mName.getText().toString(), mParkCode.getText().toString(), mAccessCode.getText().toString(), false);
-                    mPresenter.writeToService(newSub);
-                    startDelay();
                 }
         });
 
         return root;
+    }
+
+    @Override
+    public void onDestroy() {
+        mPresenter.demolition();
+        super.onDestroy();
     }
 
 

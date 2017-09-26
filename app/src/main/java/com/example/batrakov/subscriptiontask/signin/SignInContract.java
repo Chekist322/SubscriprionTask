@@ -32,10 +32,12 @@ public interface SignInContract {
 
         boolean[] fullCheck(String aName, String aParkCode, String aAccessCode);
 
-        boolean checkName(String aName, ArrayList<String> aList);
+        boolean checkName(String aName);
 
         boolean checkParkCode(String aParkCode);
 
         boolean checkAccessCode(String aAccessCode);
+
+        void demolition();
     }
 }
