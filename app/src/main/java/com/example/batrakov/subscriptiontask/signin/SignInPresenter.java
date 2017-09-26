@@ -24,21 +24,17 @@ public class SignInPresenter implements SignInContract.Presenter {
     public static final String NEW_SUB = "new sub";
     public static final String SERVICE_TASK = "service task";
     public static final String BROADCAST_ACTION = "filter sign in";
-    public static final String SUB_INDEX = "sub index";
-    private BroadcastReceiver mReceiver;
 
-    private ArrayList<String> mNames;
     private SignInContract.View mView;
 
     public SignInPresenter(SignInContract.View aView) {
-        mNames = new ArrayList<>();
         mView = aView;
         mView.setPresenter(this);
     }
 
     @Override
     public void start() {
-        buildReciever();
+
     }
 
     @Override
@@ -59,21 +55,6 @@ public class SignInPresenter implements SignInContract.Presenter {
     }
 
     @Override
-    public void buildReciever() {
-        Log.i("stage", "receive");
-        mReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getExtras() != null) {
-                    mNames = intent.getStringArrayListExtra(GET_NAMES);
-                }
-            }
-        };
-        IntentFilter intFilt = new IntentFilter(BROADCAST_ACTION);
-        mView.getCurrentActivity().registerReceiver(mReceiver, intFilt);
-    }
-
-    @Override
     public boolean[] fullCheck(String aName, String aParkCode, String aAccessCode) {
         boolean[] checkList = {false, false, false};
         checkList[0] = checkParkCode(aParkCode);
@@ -91,8 +72,4 @@ public class SignInPresenter implements SignInContract.Presenter {
         return aAccessCode.equals("1423");
     }
 
-    @Override
-    public void demolition() {
-        mView.getCurrentActivity().unregisterReceiver(mReceiver);
-    }
 }

@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -57,7 +56,6 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.i("stage", "onCreate");
         super.onCreate(savedInstanceState);
         mListAdapter = new SubAdapter(new ArrayList<Subscription>(0));
         mSubscriptionListPresenter.start();
@@ -73,7 +71,6 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
 
     @Override
     public void onResume() {
-        Log.i("stage", "onResume");
         super.onResume();
         mSubscriptionListPresenter.readFromService();
     }
@@ -81,7 +78,6 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        Log.i("stage", "onCreateView");
         final View root = inflater.inflate(R.layout.subscription_list_frag, container, false);
 
         mNoSubView = root.findViewById(R.id.noSubsView);
@@ -151,7 +147,6 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        Log.i("stage", "onCreateOptionsMenu");
         inflater.inflate(R.menu.sub_list_menu, menu);
         mAddSub = menu.findItem(R.id.add_new_sub);
         if (mListAdapter.getCount() > 2) {
@@ -180,7 +175,6 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
 
     @Override
     public void showSubs(ArrayList<Subscription> aList) {
-        Log.i("stage", "showSubs");
         if (!aList.isEmpty()) {
             mNoSubView.setVisibility(View.GONE);
             mNoSubViewPlus.setVisibility(View.GONE);
@@ -204,7 +198,6 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
 
     @Override
     public void setPresenter(SubscriptionListContract.Presenter presenter) {
-        Log.i("stage", "setPresenter");
         mSubscriptionListPresenter = presenter;
     }
 
@@ -249,25 +242,22 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
             }
 
             final Subscription subscription = getItem(i);
-            final TextView name = (TextView) rowView.findViewById(R.id.nameItem);
+            final TextView name = rowView.findViewById(R.id.nameItem);
             name.setText(subscription.getName());
-            final RadioButton button = (RadioButton) rowView.findViewById(R.id.radioButton);
+            final RadioButton button = rowView.findViewById(R.id.radioButton);
             if (subscription.isEnabled()) {
-                Log.i("radio", "true");
                 button.setChecked(true);
             } else {
-                Log.i("radio", "false");
                 button.setChecked(false);
             }
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.i("cho", "click");
                     checkRadioButtons(i);
                 }
             });
 
-            final ImageView imageView = (ImageView) rowView.findViewById(R.id.item_info);
+            final ImageView imageView = rowView.findViewById(R.id.item_info);
 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -282,7 +272,7 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
     private class Loading implements Runnable {
 
         private int mDelay;
-        private final int mLongDelay = 10000;
+        private static final int LONG_DELAY = 10000;
 
         Loading(int aDelay) {
             mDelay = aDelay;
@@ -303,7 +293,7 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionLi
             Message msg = new Message();
             msg.what = FINISH_HANDLE;
             msg.arg1 = SUCCESS;
-            if (mDelay == mLongDelay) {
+            if (mDelay == LONG_DELAY) {
                 msg.arg1 = FAULT;
             }
             mHandler.sendMessage(msg);

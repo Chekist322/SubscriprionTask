@@ -23,8 +23,6 @@ public class SubscriptionService extends Service {
 
     }
 
-
-
     @Override
     public void onCreate() {
         mSubscription = new ArrayList<>();

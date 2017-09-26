@@ -28,14 +28,11 @@ public interface SignInContract {
 
         void readFromService();
 
-        void buildReciever();
-
         boolean[] fullCheck(String aName, String aParkCode, String aAccessCode);
 
         boolean checkParkCode(String aParkCode);
 
         boolean checkAccessCode(String aAccessCode);
 
-        void demolition();
     }
 }

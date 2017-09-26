@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,7 +76,6 @@ public class SubscriptionListPresenter implements SubscriptionListContract.Prese
 
     @Override
     public void buildReciever() {
-        Log.i("stage", "recieve");
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -180,7 +178,6 @@ public class SubscriptionListPresenter implements SubscriptionListContract.Prese
 
     @Override
     public void start() {
-        Log.i("stage", "start");
         buildReciever();
     }
 
