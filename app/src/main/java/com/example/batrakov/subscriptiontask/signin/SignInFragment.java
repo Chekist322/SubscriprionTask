@@ -37,9 +37,11 @@ public class SignInFragment extends Fragment implements SignInContract.View {
     private TextView mParkCodeError;
     private TextView mAccessCodeError;
 
+    private static final String CHECK_LIST = "check list";
     private static final int START_HANDLE = 1;
     private static final int FINISH_HANDLE = 2;
     private static final int DELAY = 2000;
+    private static final int LONG_DELAY = 10000;
 
 
     public SignInFragment() {
@@ -47,7 +49,6 @@ public class SignInFragment extends Fragment implements SignInContract.View {
 
     @Override
     public void onCreate(@Nullable Bundle aSavedInstanceState) {
-        mPresenter.buildReciever();
         super.onCreate(aSavedInstanceState);
     }
 
@@ -63,17 +64,17 @@ public class SignInFragment extends Fragment implements SignInContract.View {
         setHasOptionsMenu(true);
 
         mName = root.findViewById(R.id.nameItem);
+        mName.setBackgroundResource(R.drawable.edit_text_sign_in);
         mParkCode = root.findViewById(R.id.parkCode);
+        mParkCode.setBackgroundResource(R.drawable.edit_text_sign_in);
         mAccessCode = root.findViewById(R.id.accessCode);
+        mAccessCode.setBackgroundResource(R.drawable.edit_text_sign_in);
         mButton = root.findViewById(R.id.subscribeButton);
         mProgressBar = root.findViewById(R.id.progressBar);
         mProgressBar.setVisibility(View.GONE);
         mBack = root.findViewById(R.id.backToList);
         mParkCodeError = root.findViewById(R.id.parkCodeError);
         mAccessCodeError = root.findViewById(R.id.accessCodeError);
-
-
-
 
         mBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,9 +93,31 @@ public class SignInFragment extends Fragment implements SignInContract.View {
                         mProgressBar.setVisibility(View.VISIBLE);
                         break;
                     case FINISH_HANDLE:
-                        mButton.setVisibility(View.VISIBLE);
-                        mProgressBar.setVisibility(View.GONE);
-                        getActivity().finish();
+                        boolean[] checkList;
+                        checkList = aMsg.getData().getBooleanArray(CHECK_LIST);
+
+                        assert checkList != null;
+                        if (checkList[0] && checkList[1]) {
+                            Subscription newSub = new Subscription(mName.getText().toString(),
+                                    mParkCode.getText().toString(), mAccessCode.getText().toString(), false);
+                            mPresenter.writeToService(newSub);
+                            getActivity().finish();
+                        } else {
+                            mButton.setVisibility(View.VISIBLE);
+                            mProgressBar.setVisibility(View.GONE);
+
+                            if (!checkList[0]) {
+                                mParkCodeError.setVisibility(View.VISIBLE);
+                            } else {
+                                mParkCodeError.setVisibility(View.INVISIBLE);
+                            }
+
+                            if (!checkList[1]) {
+                                mAccessCodeError.setVisibility(View.VISIBLE);
+                            } else {
+                                mAccessCodeError.setVisibility(View.INVISIBLE);
+                            }
+                        }
                         break;
                     default:
                         super.handleMessage(aMsg);
@@ -105,28 +128,15 @@ public class SignInFragment extends Fragment implements SignInContract.View {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View aView) {
-                    mPresenter.readFromService();
                     boolean[] checkList = mPresenter.fullCheck(mName.getText().toString(),
                             mParkCode.getText().toString(), mAccessCode.getText().toString());
                     if (checkList[0] && checkList[1]) {
                         Subscription newSub = new Subscription(mName.getText().toString(),
                                 mParkCode.getText().toString(), mAccessCode.getText().toString(), false);
                         mPresenter.writeToService(newSub);
-                        startDelay();
+                        startDelay(DELAY, checkList);
                     } else {
-                        if (!checkList[0]) {
-                            mParkCodeError.setVisibility(View.VISIBLE);
-                        }
-                        else {
-                            mParkCodeError.setVisibility(View.INVISIBLE);
-                        }
-
-                        if (!checkList[1]){
-                            mAccessCodeError.setVisibility(View.VISIBLE);
-                        }
-                        else {
-                            mAccessCodeError.setVisibility(View.INVISIBLE);
-                        }
+                        startDelay(LONG_DELAY, checkList);
                     }
                 }
         });
@@ -135,7 +145,6 @@ public class SignInFragment extends Fragment implements SignInContract.View {
 
     @Override
     public void onDestroy() {
-        mPresenter.demolition();
         super.onDestroy();
     }
 
@@ -151,23 +160,38 @@ public class SignInFragment extends Fragment implements SignInContract.View {
     }
 
     @Override
-    public void startDelay() {
-        Thread loadingThread = new Thread(new Loading());
+    public void startDelay(int aDelay, boolean[] aCheckList) {
+        Thread loadingThread = new Thread(new Loading(aDelay, aCheckList));
         loadingThread.start();
     }
 
     private class Loading implements Runnable {
+
+        private int mDelay;
+        private boolean[] mCheckList;
+
+        Loading(int aDelay, boolean[] aCheckList) {
+            mCheckList = aCheckList;
+            mDelay = aDelay;
+        }
 
         @Override
         public void run() {
 
             mHandler.sendEmptyMessage(START_HANDLE);
             try {
-                Thread.sleep(DELAY);
+                Thread.sleep(mDelay);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            mHandler.sendEmptyMessage(FINISH_HANDLE);
+
+            Looper.prepare();
+            Message msg = new Message();
+            msg.what = FINISH_HANDLE;
+            Bundle bundle = new Bundle();
+            bundle.putBooleanArray(CHECK_LIST, mCheckList);
+            msg.setData(bundle);
+            mHandler.sendMessage(msg);
         }
     }
 

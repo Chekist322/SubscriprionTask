@@ -18,7 +18,7 @@ public interface SignInContract {
 
         Activity getCurrentActivity();
 
-        void startDelay();
+        void startDelay(int aDelay, boolean[] aCheckList);
 
     }
 
