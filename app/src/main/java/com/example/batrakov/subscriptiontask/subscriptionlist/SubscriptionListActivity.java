@@ -1,21 +1,13 @@
 package com.example.batrakov.subscriptiontask.subscriptionlist;
 
-import android.content.Intent;
-import android.support.v4.widget.DrawerLayout;
-
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 
 import com.example.batrakov.subscriptiontask.R;
-import com.example.batrakov.subscriptiontask.SubscriptionService;
-import com.example.batrakov.subscriptiontask.signin.SignInActivity;
 import com.example.batrakov.subscriptiontask.util.ActivityUtils;
 
 public class SubscriptionListActivity extends AppCompatActivity {
-
 
     private SubscriptionListPresenter mSubscriptionListPresenter;
 

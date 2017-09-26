@@ -2,8 +2,6 @@ package com.example.batrakov.subscriptiontask.subscriptionlist;
 
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 
 import com.example.batrakov.subscriptiontask.BasePresenter;
 import com.example.batrakov.subscriptiontask.BaseView;
@@ -17,7 +15,7 @@ import java.util.ArrayList;
 
 public interface SubscriptionListContract {
 
-    interface View extends BaseView<Presenter>{
+    interface View extends BaseView<Presenter> {
 
         void showSignIn();
 
@@ -29,7 +27,7 @@ public interface SubscriptionListContract {
 
         void startDelay(int aDelay);
     }
-    interface Presenter extends BasePresenter{
+    interface Presenter extends BasePresenter {
 
         void addNewSubscription();
 

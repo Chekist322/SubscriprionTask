@@ -32,8 +32,6 @@ public interface SignInContract {
 
         boolean[] fullCheck(String aName, String aParkCode, String aAccessCode);
 
-        boolean checkName(String aName);
-
         boolean checkParkCode(String aParkCode);
 
         boolean checkAccessCode(String aAccessCode);

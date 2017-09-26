@@ -1,12 +1,10 @@
 package com.example.batrakov.subscriptiontask;
 
-import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.example.batrakov.subscriptiontask.signin.SignInPresenter;
 import com.example.batrakov.subscriptiontask.subscriptionlist.SubscriptionListPresenter;
@@ -20,8 +18,6 @@ import java.util.ArrayList;
 public class SubscriptionService extends Service {
 
     private ArrayList<Subscription> mSubscription;
-    private Notification mNotification;
-    private static final int ID = 451;
 
     public SubscriptionService() {
 
@@ -36,14 +32,9 @@ public class SubscriptionService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-//        if (mSubscription != null) {
-//            buildNotification(mSubscription.size());
-//        } else {
-//            buildNotification(0);
-//        }
+    public int onStartCommand(Intent aIntent, int aFlags, int aStartId) {
 
-        switch (intent.getStringExtra(SubscriptionListPresenter.SERVICE_TASK)){
+        switch (aIntent.getStringExtra(SubscriptionListPresenter.SERVICE_TASK)) {
             case SubscriptionListPresenter.READ_FROM_SERVICE:
                 Bundle outBundle = new Bundle();
                 outBundle.putSerializable(SubscriptionListPresenter.SUB_INDEX, mSubscription);
@@ -52,7 +43,7 @@ public class SubscriptionService extends Service {
                 sendBroadcast(out);
                 break;
             case SignInPresenter.WRITE_TO_SERVICE:
-                Bundle inBundle = intent.getExtras();
+                Bundle inBundle = aIntent.getExtras();
                 Subscription inSubscription = (Subscription) inBundle.getSerializable(SignInPresenter.NEW_SUB);
                 addSub(inSubscription);
                 break;
@@ -67,33 +58,36 @@ public class SubscriptionService extends Service {
                 sendBroadcast(namesIntent);
                 break;
             case SubscriptionListPresenter.REMOVE_SUB:
-                mSubscription.remove(intent.getIntExtra(SubscriptionListPresenter.SUB_INDEX, 0));
+                mSubscription.remove(aIntent.getIntExtra(SubscriptionListPresenter.SUB_INDEX, 0));
                 break;
             case SubscriptionListPresenter.RENAME_SUB:
-                rename(intent.getIntExtra(SubscriptionListPresenter.SUB_INDEX, 0), intent.getStringExtra(SubscriptionListPresenter.NEW_NAME));
+                rename(aIntent.getIntExtra(SubscriptionListPresenter.SUB_INDEX, 0),
+                        aIntent.getStringExtra(SubscriptionListPresenter.NEW_NAME));
                 break;
             case SubscriptionListPresenter.RADIO_CHECK:
-                radioChange(intent.getIntExtra(SubscriptionListPresenter.SUB_INDEX, 0));
+                radioChange(aIntent.getIntExtra(SubscriptionListPresenter.SUB_INDEX, 0));
+                break;
+            default:
+                break;
         }
-
-        return super.onStartCommand(intent, flags, startId);
+        return super.onStartCommand(aIntent, aFlags, aStartId);
     }
 
     @Nullable
     @Override
-    public IBinder onBind(Intent intent) {
+    public IBinder onBind(Intent aIntent) {
         return null;
     }
 
-    private void addSub(Subscription aSub){
+    private void addSub(Subscription aSub) {
         mSubscription.add(aSub);
     }
 
-    private void rename(int aIndex, String aName){
+    private void rename(int aIndex, String aName) {
         mSubscription.get(aIndex).setName(aName);
     }
     
-    private void radioChange(int aIndex){
+    private void radioChange(int aIndex) {
         for (int i = 0; i < mSubscription.size(); i++) {
             mSubscription.get(i).setEnableState(false);
         }
@@ -104,9 +98,4 @@ public class SubscriptionService extends Service {
             System.out.println(mSubscription.get(i).isEnabled());
         }
     }
-
-    private ArrayList<Subscription> getSubs(){
-        return mSubscription;
-    }
-
 }

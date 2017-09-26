@@ -24,7 +24,7 @@ import com.example.batrakov.subscriptiontask.Subscription;
  * Created by batrakov on 19.09.17.
  */
 
-public class SignInFragment extends Fragment implements SignInContract.View{
+public class SignInFragment extends Fragment implements SignInContract.View {
 
     private EditText mName;
     private EditText mParkCode;
@@ -34,21 +34,21 @@ public class SignInFragment extends Fragment implements SignInContract.View{
     private SignInContract.Presenter mPresenter;
     private Handler mHandler;
     private ImageView mBack;
-    private TextView mNameError;
     private TextView mParkCodeError;
     private TextView mAccessCodeError;
 
     private static final int START_HANDLE = 1;
     private static final int FINISH_HANDLE = 2;
+    private static final int DELAY = 2000;
 
 
-    public SignInFragment(){
+    public SignInFragment() {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle aSavedInstanceState) {
         mPresenter.buildReciever();
-        super.onCreate(savedInstanceState);
+        super.onCreate(aSavedInstanceState);
     }
 
     public static SignInFragment newInstance() {
@@ -57,8 +57,9 @@ public class SignInFragment extends Fragment implements SignInContract.View{
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.sign_in_frag, container, false);
+    public View onCreateView(LayoutInflater aInflater, @Nullable ViewGroup aContainer,
+                             @Nullable Bundle aSavedInstanceState) {
+        View root = aInflater.inflate(R.layout.sign_in_frag, aContainer, false);
         setHasOptionsMenu(true);
 
         mName = root.findViewById(R.id.nameItem);
@@ -68,7 +69,6 @@ public class SignInFragment extends Fragment implements SignInContract.View{
         mProgressBar = root.findViewById(R.id.progressBar);
         mProgressBar.setVisibility(View.GONE);
         mBack = root.findViewById(R.id.backToList);
-        mNameError = root.findViewById(R.id.nameError);
         mParkCodeError = root.findViewById(R.id.parkCodeError);
         mAccessCodeError = root.findViewById(R.id.accessCodeError);
 
@@ -77,15 +77,15 @@ public class SignInFragment extends Fragment implements SignInContract.View{
 
         mBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View aView) {
                 getActivity().finish();
             }
         });
 
-        mHandler = new Handler(Looper.myLooper()){
+        mHandler = new Handler(Looper.myLooper()) {
             @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what){
+            public void handleMessage (Message aMsg) {
+                switch (aMsg.what) {
                     case START_HANDLE:
                         mBack.setVisibility(View.GONE);
                         mButton.setVisibility(View.GONE);
@@ -97,48 +97,39 @@ public class SignInFragment extends Fragment implements SignInContract.View{
                         getActivity().finish();
                         break;
                     default:
-                        super.handleMessage(msg);
+                        super.handleMessage(aMsg);
                 }
             }
         };
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View aView) {
                     mPresenter.readFromService();
-                    boolean[] checkList = mPresenter.fullCheck(mName.getText().toString(), mParkCode.getText().toString(), mAccessCode.getText().toString());
-                    if (checkList[0] && checkList[1] && checkList[2]){
-                        Subscription newSub = new Subscription(mName.getText().toString(), mParkCode.getText().toString(), mAccessCode.getText().toString(), false);
+                    boolean[] checkList = mPresenter.fullCheck(mName.getText().toString(),
+                            mParkCode.getText().toString(), mAccessCode.getText().toString());
+                    if (checkList[0] && checkList[1]) {
+                        Subscription newSub = new Subscription(mName.getText().toString(),
+                                mParkCode.getText().toString(), mAccessCode.getText().toString(), false);
                         mPresenter.writeToService(newSub);
                         startDelay();
                     } else {
-
-                        if (!checkList[0]){
-                            mNameError.setVisibility(View.VISIBLE);
-                        }
-                        else {
-                            mNameError.setVisibility(View.INVISIBLE);
-                        }
-
-                        if (!checkList[1]){
+                        if (!checkList[0]) {
                             mParkCodeError.setVisibility(View.VISIBLE);
                         }
                         else {
                             mParkCodeError.setVisibility(View.INVISIBLE);
                         }
 
-                        if (!checkList[2]){
+                        if (!checkList[1]){
                             mAccessCodeError.setVisibility(View.VISIBLE);
                         }
                         else {
                             mAccessCodeError.setVisibility(View.INVISIBLE);
                         }
                     }
-
-
                 }
         });
-
         return root;
     }
 
@@ -165,14 +156,14 @@ public class SignInFragment extends Fragment implements SignInContract.View{
         loadingThread.start();
     }
 
-    private class Loading implements Runnable{
+    private class Loading implements Runnable {
 
         @Override
         public void run() {
 
             mHandler.sendEmptyMessage(START_HANDLE);
             try {
-                Thread.sleep(2000);
+                Thread.sleep(DELAY);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

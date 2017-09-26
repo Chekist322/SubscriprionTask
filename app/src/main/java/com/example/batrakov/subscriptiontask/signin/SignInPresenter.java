@@ -25,12 +25,12 @@ public class SignInPresenter implements SignInContract.Presenter {
     public static final String SERVICE_TASK = "service task";
     public static final String BROADCAST_ACTION = "filter sign in";
     public static final String SUB_INDEX = "sub index";
-    BroadcastReceiver mReceiver;
+    private BroadcastReceiver mReceiver;
 
     private ArrayList<String> mNames;
     private SignInContract.View mView;
 
-    public SignInPresenter(SignInContract.View aView){
+    public SignInPresenter(SignInContract.View aView) {
         mNames = new ArrayList<>();
         mView = aView;
         mView.setPresenter(this);
@@ -53,7 +53,8 @@ public class SignInPresenter implements SignInContract.Presenter {
 
     @Override
     public void readFromService() {
-        Intent intent = new Intent(mView.getCurrentActivity().getApplicationContext(), SubscriptionService.class).putExtra(SERVICE_TASK, GET_NAMES);
+        Intent intent = new Intent(mView.getCurrentActivity().getApplicationContext(), SubscriptionService.class)
+                .putExtra(SERVICE_TASK, GET_NAMES);
         mView.getCurrentActivity().startService(intent);
     }
 
@@ -75,20 +76,9 @@ public class SignInPresenter implements SignInContract.Presenter {
     @Override
     public boolean[] fullCheck(String aName, String aParkCode, String aAccessCode) {
         boolean[] checkList = {false, false, false};
-        checkList[0] = checkName(aName);
-        checkList[1] = checkParkCode(aParkCode);
-        checkList[2] = checkAccessCode(aAccessCode);
+        checkList[0] = checkParkCode(aParkCode);
+        checkList[1] = checkAccessCode(aAccessCode);
         return checkList;
-    }
-
-    @Override
-    public boolean checkName(String aName) {
-        for (int i = 0; i < mNames.size(); i++) {
-            if (aName.equals(mNames.get(i))){
-                return false;
-            }
-        }
-        return true;
     }
 
     @Override
@@ -105,6 +95,4 @@ public class SignInPresenter implements SignInContract.Presenter {
     public void demolition() {
         mView.getCurrentActivity().unregisterReceiver(mReceiver);
     }
-
-
 }

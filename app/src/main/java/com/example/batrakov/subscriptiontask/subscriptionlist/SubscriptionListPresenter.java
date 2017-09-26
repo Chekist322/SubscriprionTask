@@ -16,7 +16,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.batrakov.subscriptiontask.R;
 import com.example.batrakov.subscriptiontask.Subscription;
@@ -39,11 +38,11 @@ public class SubscriptionListPresenter implements SubscriptionListContract.Prese
     public static final String RENAME_SUB = "rename sub";
     public static final String NEW_NAME = "new name";
     public static final String RADIO_CHECK = "radio check";
-    private static final int mDelay = 2000;
-    private static final int mLongDelay = 10000;
+    private static final int DELAY = 2000;
+    private static final int LONG_DELAY = 10000;
     private SubscriptionListContract.View mView;
 
-    public SubscriptionListPresenter(SubscriptionListContract.View aView){
+    public SubscriptionListPresenter(SubscriptionListContract.View aView) {
         mView = aView;
         mView.setPresenter(this);
     }
@@ -59,19 +58,20 @@ public class SubscriptionListPresenter implements SubscriptionListContract.Prese
                 .putExtra(SERVICE_TASK, REMOVE_SUB)
                 .putExtra(SUB_INDEX, aIndex);
         mView.getCurrentActivity().startService(intent);
-        mView.startDelay(mDelay);
+        mView.startDelay(DELAY);
         readFromService();
     }
 
     @Override
     public void unsubscribeError() {
-        mView.startDelay(mLongDelay);
+        mView.startDelay(LONG_DELAY);
     }
 
 
     @Override
     public void readFromService() {
-        Intent intent = new Intent(mView.getCurrentActivity().getApplicationContext(), SubscriptionService.class).putExtra(SERVICE_TASK, READ_FROM_SERVICE);
+        Intent intent = new Intent(mView.getCurrentActivity().getApplicationContext(), SubscriptionService.class)
+                .putExtra(SERVICE_TASK, READ_FROM_SERVICE);
         mView.getCurrentActivity().startService(intent);
     }
 
@@ -86,7 +86,7 @@ public class SubscriptionListPresenter implements SubscriptionListContract.Prese
                     try {
                         ArrayList<Subscription> newList = (ArrayList<Subscription>) bundle.getSerializable(SUB_INDEX);
                         mView.showSubs(newList);
-                    } catch (ClassCastException e){
+                    } catch (ClassCastException e) {
                         e.printStackTrace();
                     }
 
@@ -97,7 +97,7 @@ public class SubscriptionListPresenter implements SubscriptionListContract.Prese
         mView.getCurrentActivity().registerReceiver(receiver, intFilt);
     }
 
-    public void renameAlertDialogBuilder(final int aIndex){
+    public void renameAlertDialogBuilder(final int aIndex) {
 
         AlertDialog.Builder alert = new AlertDialog.Builder(mView.getCurrentActivity(), R.style.RenameAlertDialogTheme);
 
@@ -110,11 +110,12 @@ public class SubscriptionListPresenter implements SubscriptionListContract.Prese
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String value = input.getText().toString();
-                Intent intent = new Intent(mView.getCurrentActivity().getApplicationContext(), SubscriptionService.class).putExtra(SERVICE_TASK, RENAME_SUB);
+                Intent intent = new Intent(mView.getCurrentActivity().getApplicationContext(),
+                        SubscriptionService.class).putExtra(SERVICE_TASK, RENAME_SUB);
                 intent.putExtra(SUB_INDEX, aIndex);
                 intent.putExtra(NEW_NAME, value);
                 mView.getCurrentActivity().startService(intent);
-                mView.startDelay(mDelay);
+                mView.startDelay(DELAY);
                 readFromService();
             }
         });
@@ -131,7 +132,7 @@ public class SubscriptionListPresenter implements SubscriptionListContract.Prese
     public void unsubscribeAlertDialogBuilder(final int aIndex) {
         AlertDialog.Builder alert = new AlertDialog.Builder(mView.getCurrentActivity(), R.style.UnsubAlertDialogTheme);
         LayoutInflater inflater = mView.getCurrentActivity().getLayoutInflater();
-        LinearLayout view= (LinearLayout) inflater.inflate(R.layout.unsubscribe_alert_dialog, null);
+        LinearLayout view = (LinearLayout) inflater.inflate(R.layout.unsubscribe_alert_dialog, null);
         alert.setView(view);
         final AlertDialog dialog = alert.create();
 
@@ -150,7 +151,7 @@ public class SubscriptionListPresenter implements SubscriptionListContract.Prese
             public void onClick(View view) {
                 Random random = new Random();
                 int chance = random.nextInt(10);
-                if (chance > 7){
+                if (chance == 7) {
                     unsubscribeError();
                 } else {
                     unsubscribe(aIndex);
@@ -162,7 +163,7 @@ public class SubscriptionListPresenter implements SubscriptionListContract.Prese
         Button cancel = view.findViewById(R.id.unsubCancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View aView) {
                 dialog.cancel();
             }
         });
@@ -170,7 +171,8 @@ public class SubscriptionListPresenter implements SubscriptionListContract.Prese
 
     @Override
     public void changeRadioButtons(int aIndex) {
-        Intent intent = new Intent(mView.getCurrentActivity().getApplicationContext(), SubscriptionService.class).putExtra(SERVICE_TASK, RADIO_CHECK);
+        Intent intent = new Intent(mView.getCurrentActivity().getApplicationContext(), SubscriptionService.class)
+                .putExtra(SERVICE_TASK, RADIO_CHECK);
         intent.putExtra(SUB_INDEX, aIndex);
         mView.getCurrentActivity().startService(intent);
         readFromService();

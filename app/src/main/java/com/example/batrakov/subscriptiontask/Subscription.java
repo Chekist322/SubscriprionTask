@@ -16,27 +16,19 @@ public class Subscription implements Serializable {
         return mName;
     }
 
-    public String getParkCode() {
-        return mParkCode;
-    }
-
-    public String getAccessCode() {
-        return mAccessCode;
-    }
-
-    public void setName(String aName){
+    public void setName(String aName) {
         mName = aName;
     }
 
-    public boolean isEnabled(){
+    public boolean isEnabled() {
         return mEnabled;
     }
 
-    public void setEnableState(boolean aState){
+    public void setEnableState(boolean aState) {
         mEnabled = aState;
     }
 
-    public Subscription(String aName, String aParkCode, String aAccessCode, boolean aState){
+    public Subscription(String aName, String aParkCode, String aAccessCode, boolean aState) {
         mName = aName;
         mParkCode = aParkCode;
         mAccessCode = aAccessCode;
