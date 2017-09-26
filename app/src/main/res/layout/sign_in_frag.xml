@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
@@ -30,7 +29,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:paddingTop="8dp"
-                    android:text="Add new Subscription"
+                    android:text="@string/add_new_subscription"
                     android:textAlignment="center"
                     android:textColor="@android:color/background_light"
                     android:textSize="24sp" />
@@ -75,7 +74,7 @@
                     android:layout_marginStart="32dp"
                     android:background="@color/primary_dark"
                     android:ems="10"
-                    android:hint="Name"
+                    android:hint="@string/name"
                     android:inputType="textPersonName"
                     android:outlineProvider="bounds"
                     android:paddingEnd="@dimen/edit_text_padding"
@@ -113,7 +112,7 @@
                     android:layout_marginStart="32dp"
                     android:background="@color/primary_dark"
                     android:ems="10"
-                    android:hint="Park code"
+                    android:hint="@string/park_code"
                     android:inputType="textPersonName"
                     android:paddingEnd="@dimen/edit_text_padding"
                     android:paddingStart="@dimen/edit_text_padding"
@@ -150,7 +149,7 @@
                     android:layout_marginStart="32dp"
                     android:background="@color/primary_dark"
                     android:ems="10"
-                    android:hint="Access code"
+                    android:hint="@string/access_code"
                     android:inputType="textPersonName"
                     android:paddingEnd="@dimen/edit_text_padding"
                     android:paddingStart="@dimen/edit_text_padding"
@@ -175,7 +174,7 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="16dp"
                     android:background="@color/accent"
-                    android:text="Subscribe"
+                    android:text="@string/subscribe"
                     android:textColor="@android:color/background_light"
                     android:textSize="24sp" />
 

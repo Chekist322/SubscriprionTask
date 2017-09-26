@@ -12,4 +12,12 @@
     <string name="duplicateName">Duplicate name</string>
     <string name="parkCodeIsIncorrect">Park code is incorrect</string>
     <string name="invalidAccessCode">Invalid access code</string>
+    <string name="add_new_subscription">Add new Subscription</string>
+    <string name="name">Name</string>
+    <string name="park_code">Park code</string>
+    <string name="access_code">Access code</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="subscription">Subscription</string>
+    <string name="cancel">Cancel</string>
+    <string name="unsubscribe">Unsubscribe</string>
 </resources>
