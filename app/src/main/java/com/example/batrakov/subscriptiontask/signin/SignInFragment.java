@@ -131,9 +131,6 @@ public class SignInFragment extends Fragment implements SignInContract.View {
                     boolean[] checkList = mPresenter.fullCheck(mName.getText().toString(),
                             mParkCode.getText().toString(), mAccessCode.getText().toString());
                     if (checkList[0] && checkList[1]) {
-                        Subscription newSub = new Subscription(mName.getText().toString(),
-                                mParkCode.getText().toString(), mAccessCode.getText().toString(), false);
-                        mPresenter.writeToService(newSub);
                         startDelay(DELAY, checkList);
                     } else {
                         startDelay(LONG_DELAY, checkList);
